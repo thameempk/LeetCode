@@ -30,7 +30,7 @@ Output: 2
 Explanation: For this, we can start with the character 'd' at index 1. The closest occurrence of a 'd' to its left is at index 0, and the closest occurrence of a 'd' to its right is at index 2. We delete both index 0 and 2, so the string becomes "daaa". In the new string, we can select the character 'a' at index 2. The closest occurrence of an 'a' to its left is at index 1, and the closest occurrence of an 'a' to its right is at index 3. We delete both of them, and the string becomes "da". We cannot minimize this further, so the minimized length is 2.
 
 
-solution :
+solution 1:
 
 public class Solution {
    
@@ -47,5 +47,22 @@ public class Solution {
             min += val.Value;
         }
         return min;
+      }
+}
+
+solution 2:
+
+public class Solution {
+   
+    public int MinimizedStringLength(string s) {
+         HashSet<char> occure = new HashSet<char>();
+        for(int i = 0; i< s.Length; i++) {
+            if(!occure.Contains(s[i])){
+                occure.Add(s[i]);
+            }
+        }
+
+        
+        return occure.Count;
       }
 }
