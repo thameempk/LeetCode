@@ -1,0 +1,69 @@
+1992. Find All Groups of Farmland
+Solved
+Medium
+Topics
+Companies
+Hint
+You are given a 0-indexed m x n binary matrix land where a 0 represents a hectare of forested land and a 1 represents a hectare of farmland.
+
+To keep the land organized, there are designated rectangular areas of hectares that consist entirely of farmland. These rectangular areas are called groups. No two groups are adjacent, meaning farmland in one group is not four-directionally adjacent to another farmland in a different group.
+
+land can be represented by a coordinate system where the top left corner of land is (0, 0) and the bottom right corner of land is (m-1, n-1). Find the coordinates of the top left and bottom right corner of each group of farmland. A group of farmland with a top left corner at (r1, c1) and a bottom right corner at (r2, c2) is represented by the 4-length array [r1, c1, r2, c2].
+
+Return a 2D array containing the 4-length arrays described above for each group of farmland in land. If there are no groups of farmland, return an empty array. You may return the answer in any order.
+
+ 
+
+Example 1:
+
+
+Input: land = [[1,0,0],[0,1,1],[0,1,1]]
+Output: [[0,0,0,0],[1,1,2,2]]
+Explanation:
+The first group has a top left corner at land[0][0] and a bottom right corner at land[0][0].
+The second group has a top left corner at land[1][1] and a bottom right corner at land[2][2].
+
+--------------------------------
+
+solution : 
+
+public class Solution {
+    public int[][] FindFarmland(int[][] land) { 
+      
+        List<List<int>> ls = new List<List<int>>();
+        Queue<(int row, int col)> q = new Queue<(int, int)>();
+        int index = 0;
+        for(int i=0;i<land.Length;i++){
+            for(int j=0;j<land[0].Length;j++){
+           //  ans[i] = new int[0];   
+            if(land[i][j] == 0) continue;
+
+              q.Enqueue((i,j));
+              int v1 = -1;
+              int v2 = -1;
+              while(q.Count > 0){
+                    int r = q.Peek().row;
+                    int c = q.Peek().col;
+                    q.Dequeue();
+                    if(land[r][c] == 0) continue;
+                    v1 = r;
+                    v2 = c;
+                   
+                    land[r][c] = 0;
+
+                    if(r-1 >= 0 && land[r-1][c]==1) q.Enqueue((r-1,c));
+                    if(r+1 <= land.Length-1 && land[r+1][c]==1) q.Enqueue((r+1,c));
+                    if(c-1 >=0 && land[r][c-1]==1) q.Enqueue((r,c-1));
+                    if(c+1 <= land[0].Length-1 && land[r][c+1]==1) q.Enqueue((r,c+1));
+
+                }
+                ls.Add(new List<int>{i,j,v1,v2}); 
+            }
+        }
+        int[][] ans = new int[ls.Count][];
+        for(int i=0;i<ls.Count;i++){
+          ans[i] = new int[4]{ls[i][0],ls[i][1],ls[i][2],ls[i][3]};
+        }
+        return ans;
+    }
+}
